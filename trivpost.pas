@@ -6,8 +6,6 @@ uses SysUtils, strutils;
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  //Classes
-  { you can add units after this }
 
 Const
   prog    = 'RCS Trivia Post';
@@ -19,9 +17,7 @@ Const
   magenta = (#27'[1;35m');
   cyan    = (#27'[1;36m');
   nocolor = (#27'[0m');
-
-  //ran   = 284;
-
+ 
 Var
   qnum    : longint;
   qnum1   : string;
@@ -36,15 +32,12 @@ Var
 
 Procedure rnum;
 begin
-
   Randomize;
   qnum:=(Random(ran)+1);
-
 end;
 
 Procedure dupecheck;
 begin
-
   if fileexists('trivdupe.log')=true then begin
     reset(trivdupe);
     while not eof(trivdupe) do
@@ -55,35 +48,27 @@ begin
           begin
             if (count=ran) then begin
               writeln('All available questions have been posted! ');
-              //readln;
               halt;
             end;
             rnum;
             dupecheck;
             inc(count);
           end;
-
         end;
-
       end;
     //closefile(trivlog);
     end;
-
 end;
 
 Procedure header;
 begin
-
-  //writeln(trivia);
   write(trivia,blue);
   writeln(trivia,'***********************************');
   writeln(trivia);
-
 end;
 
 Procedure footer;
 begin
-
   header;
   write(trivia,cyan);
   write(trivia,prog);
@@ -93,7 +78,6 @@ begin
   //writeln(trivia);
   writeln(trivia,nocolor);
   writeln(trivia,'---');
-
 end;
 
 Procedure quit;
@@ -110,12 +94,8 @@ begin
   ran:=strtoint(Copy(str2,1,3));
   ran:=ran-1;
   closefile(trivq);
-  //writeln(ran);
-  //readln;
-
 end;
   {$R *.res}
-
 
 begin
   qnum:=0;
@@ -129,27 +109,21 @@ begin
   GetMaxEntry;
   rewrite(trivia);
   reset(trivq);
-
   rnum;
   dupecheck;
-
   if fileexists('trivlog.txt')=false then Rewrite(trivlog)
     else append(trivlog);
   if fileexists('trivdupe.log')=false then Rewrite(trivdupe)
     else append(trivdupe);
-
   writeln(trivlog);
   writeln(trivdupe);
   write(trivlog,qnum);
   write(trivdupe,qnum);
   //writeln(qnum);
   header;
-
   while not eof(trivq) do
     begin
-
       readln(trivq,str1);
-
       if AnsiStartsStr((inttostr(qnum)),str1) then begin
         write(trivia,red);
         writeln(trivia,str1);
@@ -165,10 +139,7 @@ begin
 
       end;
   end;
-
   footer;
-
-  //readln;
   closefile(trivq);
   closefile(trivia);
   closefile(trivlog);
